@@ -12,6 +12,7 @@ namespace IdealGasCalculator
         static void Main(string[] args)
         {
             //Variable and Array Declerations & Intializations
+            // GLENN: style, lowercase String
             String[] gasNames = new string[200];
             String gasName;
             double[] molecularWeights = new double[200];
@@ -46,6 +47,12 @@ namespace IdealGasCalculator
 
                     }
                 } while (molecularWeight == -1);
+                // GLENN: (suggestion) Be a little careful here, comparing == with doubles is hazardous.
+                // Doubles can sometimes be slightly inaccurate, especially when division is involved.
+                // A more fail-safe way to do this would be to return either -1 on failure and check if < 0,
+                // or return NaN and check for NaN on failure.
+                // In this case, the code works, but just be aware of this for the future.
+
 
                 //Ask User for Gas Variable Values
                 Console.WriteLine("Enter the mass of the gas in grams: ");
@@ -65,6 +72,7 @@ namespace IdealGasCalculator
                 Console.WriteLine("\n\nWould you like to do another gas calculation (y/n)? ");
                 answer = Console.ReadLine();
             } while (answer == "y");
+            // GLENN: Be careful, use String.Equals(...), or another.Equals(...) to compare strings.
 
             //Goodbye Message
             Console.WriteLine("\n\nThank you for using the Ideal Gas Calculater! Goodbye! :)");
@@ -108,11 +116,14 @@ namespace IdealGasCalculator
         private static void DisplayGasNames(string[] gasNames, int countGases)
         {
             //Adds gasName Array into 3 columns
+            // GLENN: Be careful, this works because gasNames is bigger than countGases, but in general
+            // if you're comparing multiple elements, you probably want to use a condition like this:
+            // i + 2 < countGases
             for (int i = 0; i < countGases;)
             {
                 //Displays the Gas Names 3 to a Row                 
                 System.Console.WriteLine("{0,-20} {1, -20} {2, -20}", gasNames[i], gasNames[i + 1], gasNames[i + 2]);
-                i += 3;
+                i += 3;  // GLENN: you can put this in your for (as the last part)
             }
 
         }
@@ -128,7 +139,7 @@ namespace IdealGasCalculator
             for (int i = 0; i < countGases; i++)
             {
                 //Converts molecularWeight into gases weight in mols and returns mol weight
-                if (gasNames[i] == gasName)
+                if (gasNames[i] == gasName) // GLENN: See .Equals or String.Equals
                 {
                     Console.WriteLine("\n\n" + gasName + ": " + molecularWeights[i]);
                     return molecularWeights[i];
@@ -182,7 +193,7 @@ namespace IdealGasCalculator
             double kelvin;
 
             //Conversion Calculation
-            kelvin = celcius + 273;
+            kelvin = celcius + 273; // GLENN: 273.15
 
             //Returns Tempurature in Kelvin            
             return kelvin;
